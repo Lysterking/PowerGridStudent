@@ -1,11 +1,12 @@
-
 from enum import Enum
+
 
 class Case(Enum):
     VIDE = 0
     OBSTACLE = 1
     CLIENT = 2
     ENTREE = 4
+
 
 class Terrain:
     def __init__(self):
@@ -18,7 +19,7 @@ class Terrain:
         with open(fichier, "r") as f:
             ligne_max = 0
             for ligne in f:
-                ligne = list(ligne)[:-1]
+                ligne = ligne.rstrip('\n\r')  
                 ligne_cases = []
                 n = 0
                 for c in ligne:
@@ -36,9 +37,12 @@ class Terrain:
                 self.cases.append(ligne_cases)
                 if ligne_max < n:
                     ligne_max = n
+
+        
         for i, l in enumerate(self.cases):
             while len(l) < ligne_max:
                 self.cases[i].append(Case.OBSTACLE)
+
         self.largeur = ligne_max
         self.hauteur = len(self.cases)
 
@@ -65,13 +69,12 @@ class Terrain:
             for c in l:
                 if c == Case.OBSTACLE:
                     print("X", end="")
-                if c == Case.CLIENT:
+                elif c == Case.CLIENT:
                     print("C", end="")
-                if c == Case.VIDE:
+                elif c == Case.VIDE:
                     print("~", end="")
-                if c == Case.ENTREE:
+                elif c == Case.ENTREE:
                     print("E", end="")
                 else:
                     print(" ", end="")
             print()
-
